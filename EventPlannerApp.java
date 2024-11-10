@@ -1,6 +1,7 @@
 import java.time.*;
 import java.time.format.*;
 import java.util.*;
+
 class task {
     private String title, description, status;
     private LocalDate startDate, endDate;
@@ -52,10 +53,11 @@ class task {
     }
 
     public String toString() {
-        return "{ Title: " + title + ",\nDescription: " + description + ",\nStatus: " + status + " }";
+        return "{ Title: " + title + ", Description: " + description + ", Status: " + status + " }";
     }
 
 }
+
 abstract class Event {
     private String eventTitle, eventId, eventManager, customerContact;
     private LocalDate eventDate;
@@ -80,16 +82,12 @@ abstract class Event {
         return eventTitle;
     }
 
-    public String geTeventId() {
-        return eventId;
-    }
-
-    public String geTeventManager() {
-        return eventManager;
-    }
-
     public String geTcustomerContact() {
         return customerContact;
+    }
+
+    public LocalDate geTeventDate() {
+        return eventDate;
     }
 
     public int geTdurationInDays() {
@@ -100,12 +98,24 @@ abstract class Event {
         return numOfParticipants;
     }
 
+    public String geTeventId() {
+        return eventId;
+    }
+
+    public String geTeventManager() {
+        return eventManager;
+    }
+
     public int geTunitPrice() {
         return unitPrice;
     }
 
-    public LocalDate geTeventDate() {
-        return eventDate;
+    public String getTasks(){
+        String res="";
+        for(task it:tasks){
+            res+=it;
+        }
+        return res;
     }
 
     // setter methods
@@ -157,12 +167,13 @@ abstract class Event {
                 "\nEvent manager: " + eventManager +
                 "\nCsutomer contact: " + customerContact + "\nEvent date: " + eventDate + "\nDuration in days: "
                 + durationInDays + "\nNum of participants: " + numOfParticipants + "\nUnit price: " + unitPrice
-                + "\nTasks " + tasks;
+                + "\nTasks " + getTasks();
     }
 
     public abstract double getBill();
 }
-class CorporateEvent extends Event{
+
+class CorporateEvent extends Event {
     private String venue;
     private boolean hasDiscount;
 
@@ -184,38 +195,39 @@ class CorporateEvent extends Event{
 class TourPackage extends Event {
     ArrayList<String> placesToVisit;
     ArrayList<String> customerContacts;
-    private int numOfRegisteredParticipants,perPersonPrice;
-    public TourPackage(String eventTitle, String customerContact,LocalDate eventDate, int durationInDays, int numOfParticipants,
+    private int numOfRegisteredParticipants, perPersonPrice;
+
+    public TourPackage(String eventTitle, String customerContact, LocalDate eventDate, int durationInDays,
+            int numOfParticipants,
             int perPersonPrice) {
         super(eventTitle, customerContact, eventDate, durationInDays, numOfParticipants);
         this.placesToVisit = new ArrayList<>();
         this.customerContacts = new ArrayList<>();
-        this.perPersonPrice=perPersonPrice;
+        this.perPersonPrice = perPersonPrice;
         addPrefixCodeToId("TP");
     }
-    
+
     // getter methods
 
-    public int geTperPersonPrice(){return perPersonPrice;}
+    public int geTperPersonPrice() {
+        return perPersonPrice;
+    }
 
-
-    public boolean registerForTour(int participants, String contactNo){
-        if(geTnumOfParticipants()<=(numOfRegisteredParticipants+participants)){
-            numOfRegisteredParticipants+=participants;
+    public boolean registerForTour(int participants, String contactNo) {
+        if (geTnumOfParticipants() <= (numOfRegisteredParticipants + participants)) {
+            numOfRegisteredParticipants += participants;
             customerContacts.add(contactNo);
             return true;
         }
         return false;
     }
 
-
-    public void addPlacesToVisit(String placeToVisit){
+    public void addPlacesToVisit(String placeToVisit) {
         placesToVisit.add(placeToVisit);
     }
 
-
     public double getBill() {
-        int totalBill = numOfRegisteredParticipants*perPersonPrice;
+        int totalBill = numOfRegisteredParticipants * perPersonPrice;
         return totalBill;
     }
 }
@@ -321,7 +333,11 @@ class EventPlanner {
         Event chk = findEvent(tourId);
         if (chk != null) {
             TourPackage tk = new TourPackage(tourId, contact, null, participants, participants, participants);
-            tk.registerForTour(participants, contact);
+            if (tk.registerForTour(participants, contact)) {
+                System.out.println("Successfully registered.");
+            } else {
+                System.out.println("Failed !!!!");
+            }
         }
     }
 
@@ -361,13 +377,15 @@ class EventPlanner {
         return 0;
     }
 }
+
 public class EventPlannerApp {
     public static void main(String[] args) {
         EventPlanner evp1 = new EventPlanner("EVP1");
+        Scanner scan = new Scanner(System.in);
         while (true) {
             System.out.println("1 to login as employee\n2 as customer\n3 to switch role\n0 to exit");
             System.out.println("Role:");
-            int role = new Scanner(System.in).nextInt();
+            int role = scan.nextInt();
             if (role == 1) {
                 while (true) {
                     System.out.println("Log in as employee");
@@ -379,27 +397,27 @@ public class EventPlannerApp {
                             "7 to start task\n" +
                             "8 to complete task\n" +
                             "0 to logout\n");
-                    int op = new Scanner(System.in).nextInt();
+                    int op = scan.nextInt();
                     if (op == 0) {
                         System.out.println("Log out successfully.");
                         break;
                     } else if (op == 1) {
                         System.out.println("Eventtitle:");
-                        String eventTitle = new Scanner(System.in).next();
+                        String eventTitle = scan.next();
                         System.out.println("Customer Contact:");
-                        String customerContact = new Scanner(System.in).next();
+                        String customerContact = scan.next();
                         System.out.println("Day no (1-31):");
-                        String date = new Scanner(System.in).next();
+                        String date = scan.next();
                         System.out.println("Month no(1-12):");
-                        String month = new Scanner(System.in).next();
+                        String month = scan.next();
                         System.out.println("Enter year:");
-                        String year = new Scanner(System.in).next();
+                        String year = scan.next();
                         System.out.println("Duration days:");
-                        int durationInDays = new Scanner(System.in).nextInt();
+                        int durationInDays = scan.nextInt();
                         System.out.println("Number of participants:");
-                        int numOfParticipants = new Scanner(System.in).nextInt();
+                        int numOfParticipants = scan.nextInt();
                         System.out.println("Per person price:");
-                        int perPersonPrice = new Scanner(System.in).nextInt();
+                        int perPersonPrice = scan.nextInt();
                         if (date.length() == 1)
                             date = "0" + date;
                         if (month.length() == 1)
@@ -420,21 +438,33 @@ public class EventPlannerApp {
 
                     } else if (op == 4) {
                         System.out.println("Event id:");
-                        String eventId = new Scanner(System.in).next();
+                        String eventId = scan.next();
                         evp1.acceptEvent(eventId);
                     } else if (op == 5) {
-                        String eventId = new Scanner(System.in).next(), managerName = new Scanner(System.in).next();
-                        ;
+                        System.out.println("Event id:");
+                        String eventId = scan.next();
+                        System.out.println("Manager name:");
+                        String managerName = scan.next();
                         evp1.assignEventManager(eventId, managerName);
                     } else if (op == 6) {
-                        String eventId = new Scanner(System.in).next(), title = new Scanner(System.in).next(),
-                                description = new Scanner(System.in).next();
+                        System.out.println("Event id:");
+                        String eventId = scan.next();
+                        System.out.println("Event title:");
+                        String title = scan.next();
+                        System.out.println("Event description:");
+                        String description = scan.next();
                         evp1.addEventTask(eventId, title, description);
                     } else if (op == 7) {
-                        String eventId = new Scanner(System.in).next(), title = new Scanner(System.in).next();
+                        System.out.println("Event id:");
+                        String eventId = scan.next();
+                        System.out.println("Event title:");
+                        String title = scan.next();
                         evp1.startEventTask(eventId, title);
                     } else if (op == 8) {
-                        String eventId = new Scanner(System.in).next(), title = new Scanner(System.in).next();
+                        System.out.println("Event id:");
+                        String eventId = scan.next();
+                        System.out.println("Event title:");
+                        String title = scan.next();
                         evp1.completeEventTask(eventId, title);
                     }
                 }
@@ -443,27 +473,27 @@ public class EventPlannerApp {
 
             else if (role == 2) {
                 while (true) {
-                    System.out.println("1 to request for corporate event\n2 to search for tour packages\n" + //
+                    System.out.println("1 to request for corporate event\n2 to search for tour packages\n" +
                             "3 to register for tour package\n4 to view the detail of their event\n5 to pay bill\n" +
                             "0 to logout");
-                    int op = new Scanner(System.in).nextInt();
+                    int op = scan.nextInt();
                     if (op == 0) {
                         break;
                     } else if (op == 1) {
                         System.out.println("eventTitle:");
-                        String eventTitle = new Scanner(System.in).next();
+                        String eventTitle = scan.next();
                         System.out.println("customerContact:");
-                        String customerContact = new Scanner(System.in).next();
+                        String customerContact = scan.next();
                         System.out.println("durationInDays:");
-                        int durationInDays = new Scanner(System.in).nextInt();
+                        int durationInDays = scan.nextInt();
                         System.out.println("numOfParticipants:");
-                        int numOfParticipants = new Scanner(System.in).nextInt();
+                        int numOfParticipants = scan.nextInt();
                         System.out.println("Day no (1-31):");
-                        String date = new Scanner(System.in).next();
+                        String date = scan.next();
                         System.out.println("Month no(1-12):");
-                        String month = new Scanner(System.in).next();
+                        String month = scan.next();
                         System.out.println("Enter year:");
-                        String year = new Scanner(System.in).next();
+                        String year = scan.next();
                         if (date.length() == 1)
                             date = "0" + date;
                         if (month.length() == 1)
@@ -477,21 +507,21 @@ public class EventPlannerApp {
                         evp1.requestEvent(eventTitle, customerContact, eventDate, durationInDays, numOfParticipants);
                     } else if (op == 2) {
                         System.out.println("Event title:");
-                        String title = new Scanner(System.in).next();
+                        String title = scan.next();
                         System.out.println(evp1.searchForTourPackages(title));
                     } else if (op == 3) {
                         System.out.println("TourId:");
-                        String tourId = new Scanner(System.in).next();
+                        String tourId = scan.next();
                         System.out.println("Participants:");
-                        int participants = new Scanner(System.in).nextInt();
+                        int participants = scan.nextInt();
                         System.out.println("Contact:");
-                        String contact = new Scanner(System.in).next();
+                        String contact = scan.next();
                         evp1.registerForTour(tourId, participants, contact);
                     } else if (op == 4) {
                         evp1.viewEvents();
                     } else if (op == 5) {
                         System.out.println("Event id:");
-                        String eventId = new Scanner(System.in).next();
+                        String eventId = scan.next();
                         evp1.payBill(eventId);
                     }
                 }
@@ -501,6 +531,7 @@ public class EventPlannerApp {
             } else
                 System.out.println("Invalid role.");
         }
+        scan.close();
     }
 
 }
