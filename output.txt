@@ -1,0 +1,10 @@
+task class:
+Task1 Testing1 New null null { Title: Task1,
+Description: Testing1,
+Status: New }
+Task1 Testing1 Progress 2024-11-11 null { Title: Task1,
+Description: Testing1,
+Status: Progress }
+Task1 Testing1 Completed 2024-11-11 2024-11-11 { Title: Task1,
+Description: Testing1,
+Status: Completed }
