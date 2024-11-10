@@ -8,3 +8,29 @@ Status: Progress }
 Task1 Testing1 Completed 2024-11-11 2024-11-11 { Title: Task1,
 Description: Testing1,
 Status: Completed }
+CC1 012345678912 2024-12-12 25 20 CC883 null 0 
+Found the task.
+{ Title: Boarding, Description: Boarding from DAC, Status: New, Start date: null, End date: null}
+Not found the task.
+null
+CC1 012345678912 2024-12-12 25 20 CC883 null 0 { Title: Boarding, Description: Boarding from DAC, Status: New, Start date: null, End date: null}
+Found the task.
+Found the task.
+Event date: 2024-12-12
+Start the task
+Not found the task.
+Not found the task.
+Not found
+{ Title: Boarding, Description: Boarding from DAC, Status: Progress, Start date: 2024-11-11, End date: null}
+Found the task.
+Not found the task.
+Event title: CC1
+Event id: CC883
+Event manager: Manager1
+Csutomer contact: 012345678912
+Event date: 2024-12-12
+Duration in days: 25
+Num of participants: 20
+Unit price: 150
+Tasks { Title: Boarding, Description: Boarding from DAC, Status: Completed, Start date: 2024-11-11, End date: 2024-11-11}
+3000.0

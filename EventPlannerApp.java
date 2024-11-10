@@ -53,7 +53,7 @@ class task {
     }
 
     public String toString() {
-        return "{ Title: " + title + ", Description: " + description + ", Status: " + status + " }";
+        return "{ Title: " + title + ", Description: " + description + ", Status: " + status + ", Start date: "+ startDate +", End date: "+endDate+"}";
     }
 
 }
@@ -110,10 +110,10 @@ abstract class Event {
         return unitPrice;
     }
 
-    public String getTasks(){
-        String res="";
-        for(task it:tasks){
-            res+=it;
+    public String getTasks() {
+        String res = "";
+        for (task it : tasks) {
+            res += it;
         }
         return res;
     }
@@ -126,17 +126,24 @@ abstract class Event {
     public void setEventManager(String name) {
         eventManager = name;
     }
-
+     
+    public void setUnitPrice(int x){
+        unitPrice=x;
+    }
+     
     public void addTask(String title, String description) {
         tasks.add(new task(title, description));
+        System.err.println("Task added successfully.");
     };
 
     public task findTask(String title) {
         for (task it : tasks) {
             if (it.getTitle().equals(title)) {
+                System.out.println("Found the task.");
                 return it;
             }
         }
+        System.out.println("Not found the task.");
         return null;
     };
 
@@ -144,6 +151,7 @@ abstract class Event {
         task tmp = findTask(title);
         if (findTask(title) != null) {
             tmp.startTask();
+            System.out.println("Event date: "+eventDate);
             return true;
         }
         return false;
@@ -151,7 +159,7 @@ abstract class Event {
 
     public boolean completeTask(String title) {
         task tmp = findTask(title);
-        if (findTask(title) != null) {
+        if (tmp != null) {
             tmp.completeTask();
             return true;
         }
@@ -176,19 +184,18 @@ abstract class Event {
 class CorporateEvent extends Event {
     private String venue;
     private boolean hasDiscount;
-
+    
     public CorporateEvent(String eventTitle, String customerContact, LocalDate eventDate,
             int durationInDays, int numOfParticipants) {
         super(eventTitle, customerContact, eventDate, durationInDays, numOfParticipants);
         addPrefixCodeToId("CC");
     }
-
-    @Override
+    
     public double getBill() {
         if (hasDiscount == true) {
-            return 0;
+            return (geTnumOfParticipants()*geTunitPrice());
         }
-        return 0;
+        return geTnumOfParticipants()*geTunitPrice();
     };
 }
 
@@ -378,8 +385,10 @@ class EventPlanner {
     }
 }
 
+
 public class EventPlannerApp {
     public static void main(String[] args) {
+        /* 
         EventPlanner evp1 = new EventPlanner("EVP1");
         Scanner scan = new Scanner(System.in);
         while (true) {
@@ -531,7 +540,7 @@ public class EventPlannerApp {
             } else
                 System.out.println("Invalid role.");
         }
-        scan.close();
+        scan.close();*/
     }
 
 }
